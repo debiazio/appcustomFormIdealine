@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+
+.btn-download {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px;
+  background-color: #e95296;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  margin: 5px 0px;
+  box-shadow: 5px 3px 5px #959494;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-download:hover{
+  background-color: #ad3d70;
+}
+
