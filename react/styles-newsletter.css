@@ -1,0 +1,57 @@
+.fccontainer {
+  max-width: 1200px;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.fctitle {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.fcform {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.fcinput {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  width: 420px;
+  border: 4px solid #696969;
+}
+
+.fcbutton {
+  padding: 12px;
+  font-weight: bold;
+  background: #696969;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.fcbutton:disabled {
+  background: #ccc !important;
+  cursor: not-allowed;
+}
+
+.fcerror {
+  color: #c62828;
+  font-size: 13px;
+}
+
+.fcsuccess {
+  color: #1a8f3a;
+  margin-top: 10px;
+  text-align: center;
+}

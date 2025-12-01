@@ -1,5 +1,8 @@
 {
   "customformidealine": {
+    "component": "faleconosco-form"
+  },
+  "newsletter-idealine": {
     "component": "newsletter-form"
   }
 }

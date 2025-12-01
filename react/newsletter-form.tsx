@@ -1,86 +1,56 @@
 import React, { useState } from 'react'
-import styles from './styles.css'
+import styles from './styles-newsletter.css'
 
-const FaleConoscoForm: React.FC = () => {
+const NewsletterForm: React.FC = () => {
   const [form, setForm] = useState({
-    assunto: '',
-    mensagem: '',
-    email: '',
     nome: '',
-    telefone: ''
+    email: ''
   })
 
   const [errors, setErrors] = useState({
     nome: '',
-    email: '',
-    telefone: '',
-    assunto: '',
-    mensagem: ''
+    email: ''
   })
 
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
 
-  const maskPhone = (value: string) => {
-    const digits = value.replace(/\D/g, '').slice(0, 11)
-    let formatted = digits.replace(/^(\d{2})(\d)/g, '($1)$2')
-    formatted = formatted.replace(/(\d{5})(\d)/, '$1-$2')
-    return formatted
-  }
-
+  // Valida campo individual (em tempo real + onBlur)
   const validateField = (name: string, value: string) => {
     const newErrors: any = { ...errors }
 
     switch (name) {
       case 'nome':
-        newErrors.nome = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/.test(value)
-          ? ''
-          : 'O nome deve conter apenas letras'
+        newErrors.nome =
+          /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/.test(value)
+            ? ''
+            : 'O nome deve conter apenas letras'
         break
-
-      case 'telefone': {
-        const digits = value.replace(/\D/g, '')
-
-        if (digits.length !== 11) {
-          newErrors.telefone = 'O telefone deve ter 11 números'
-        } else if (digits.substring(0, 2) === '00') {
-          newErrors.telefone = 'DDD inválido'
-        } else if (/^(\d)\1+$/.test(digits)) {
-          newErrors.telefone = 'Telefone inválido'
-        } else {
-          newErrors.telefone = ''
-        }
-        break
-      }
 
       case 'email':
-        newErrors.email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-          ? ''
-          : 'E-mail inválido'
-        break
-
-      case 'assunto':
-        newErrors.assunto = value.trim() === '' ? 'O assunto é obrigatório' : ''
-        break
-
-      case 'mensagem':
-        newErrors.mensagem = value.trim() === '' ? 'A mensagem é obrigatória' : ''
+        newErrors.email =
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+            ? ''
+            : 'E-mail inválido'
         break
     }
 
     setErrors(newErrors)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    let { name, value } = e.target
-
-    if (name === 'telefone') {
-      value = maskPhone(value)
-    }
-
+  // Atualiza estado + valida em tempo real
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
     setForm({ ...form, [name]: value })
     validateField(name, value)
+  }
+
+  // Verifica se tudo está válido
+  const isFormValid = () => {
+    const noErrors = Object.values(errors).every((e) => e === '')
+    const allFilled = Object.values(form).every((v) => v.trim() !== '')
+    return noErrors && allFilled
   }
 
   const validateForm = () => {
@@ -88,12 +58,6 @@ const FaleConoscoForm: React.FC = () => {
       validateField(key, (form as any)[key])
     )
     return isFormValid()
-  }
-
-  const isFormValid = () => {
-    const noErrors = Object.values(errors).every((e) => e === '')
-    const allFilled = Object.values(form).every((v) => v.trim() !== '')
-    return noErrors && allFilled
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -106,18 +70,23 @@ const FaleConoscoForm: React.FC = () => {
     setError(false)
 
     try {
-      const res = await fetch('/api/dataentities/CT/documents', {
+      const payload = {
+        name: form.nome,
+        email: form.email
+      }
+
+      const res = await fetch('/api/dataentities/NL/documents', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/vnd.vtex.ds.v10+json'
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify(payload)
       })
 
       if (res.ok) {
         setSuccess(true)
-        setForm({ assunto: '', mensagem: '', email: '', nome: '', telefone: '' })
+        setForm({ nome: '', email: '' })
       } else {
         setError(true)
       }
@@ -131,14 +100,16 @@ const FaleConoscoForm: React.FC = () => {
 
   return (
     <div className={styles.fccontainer}>
-      <h2 className={styles.fctitle}>Fale Conosco</h2>
 
       <form onSubmit={handleSubmit} className={styles.fcform}>
+
+        {/* Nome */}
+        <div className={styles.divnome}>
 
         <input
           type="text"
           name="nome"
-          placeholder="Nome"
+          placeholder="Seu nome"
           value={form.nome}
           onChange={handleChange}
           onBlur={(e) => validateField('nome', e.target.value)}
@@ -146,49 +117,23 @@ const FaleConoscoForm: React.FC = () => {
         />
         {errors.nome && <p className={styles.fcerror}>{errors.nome}</p>}
 
-        <input
-          type="text"
-          name="telefone"
-          placeholder="Telefone"
-          value={form.telefone}
-          onChange={handleChange}
-          onBlur={(e) => validateField('telefone', e.target.value)}
-          className={styles.fcinput}
-        />
-        {errors.telefone && <p className={styles.fcerror}>{errors.telefone}</p>}
+        </div>
 
+        {/* Email */}
+        <div className={styles.divemail}>
         <input
           type="email"
           name="email"
-          placeholder="E-mail"
+          placeholder="Seu email"
           value={form.email}
           onChange={handleChange}
           onBlur={(e) => validateField('email', e.target.value)}
           className={styles.fcinput}
         />
         {errors.email && <p className={styles.fcerror}>{errors.email}</p>}
+        </div>
 
-        <input
-          type="text"
-          name="assunto"
-          placeholder="Assunto"
-          value={form.assunto}
-          onChange={handleChange}
-          onBlur={(e) => validateField('assunto', e.target.value)}
-          className={styles.fcinput}
-        />
-        {errors.assunto && <p className={styles.fcerror}>{errors.assunto}</p>}
-
-        <textarea
-          name="mensagem"
-          placeholder="Mensagem"
-          value={form.mensagem}
-          onChange={handleChange}
-          onBlur={(e) => validateField('mensagem', e.target.value)}
-          className={styles.fctextarea}
-        />
-        {errors.mensagem && <p className={styles.fcerror}>{errors.mensagem}</p>}
-
+        <div className={styles.divbutton}>
         <button
           type="submit"
           disabled={!isFormValid() || loading}
@@ -196,12 +141,19 @@ const FaleConoscoForm: React.FC = () => {
         >
           {loading ? 'Enviando...' : 'Enviar'}
         </button>
+        </div>
 
-        {success && <p className={styles.fcsuccess}>Mensagem enviada com sucesso!</p>}
-        {error && <p className={styles.fcerror}>Ocorreu um erro ao enviar.</p>}
+        {success && (
+          <p className={styles.fcsuccess}>Inscrição realizada com sucesso!</p>
+        )}
+        {error && (
+          <p className={styles.fcerror}>
+            Ocorreu um erro ao enviar. Tente novamente.
+          </p>
+        )}
       </form>
     </div>
   )
 }
 
-export default FaleConoscoForm
+export default NewsletterForm
