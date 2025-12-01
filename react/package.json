@@ -1,5 +1,5 @@
 {
-  "name": "app-form-idealine",
+  "name": "appformidealine",
   "version": "0.0.0",
   "scripts": {
     "test": "vtex-test-tools test"
