@@ -104,6 +104,7 @@ const NewsletterForm: React.FC = () => {
       <form onSubmit={handleSubmit} className={styles.fcform}>
 
         {/* Nome */}
+        <div className={styles.fccampos}>
         <div className={styles.divnome}>
 
         <input
@@ -142,7 +143,7 @@ const NewsletterForm: React.FC = () => {
           {loading ? 'Enviando...' : 'Enviar'}
         </button>
         </div>
-
+        </div>
         {success && (
           <p className={styles.fcsuccess}>Inscrição realizada com sucesso!</p>
         )}
