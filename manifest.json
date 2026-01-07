@@ -1,7 +1,7 @@
 {
   "vendor": "mfmgroup",
   "name": "appformidealine",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "title": "form-idealine",
   "description": "App para corrigir bug do formulário de contato",
   "builders": {
