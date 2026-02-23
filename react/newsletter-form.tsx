@@ -101,7 +101,7 @@ const NewsletterForm: React.FC = () => {
   return (
     <div className={styles.fccontainer}>
 
-      <form onSubmit={handleSubmit} className={styles.fcform}>
+      <form onSubmit={handleSubmit} className={styles.fcformNewsletter}>
 
         {/* Nome */}
         <div className={styles.fccampos}>

@@ -6,6 +6,12 @@
   border-color: #bfbfbf !important;
 }
 
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+  width: 100%;
+}
+
 
 .fccontainer {
   max-width: 50vw;
@@ -20,6 +26,13 @@
   text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
 }
 
 .fcform {

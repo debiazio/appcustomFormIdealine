@@ -21,10 +21,18 @@
   margin-bottom: 15px;
 }
 
-.fcform {
+.fcformNewsletter .fccampos input[type="text"],
+input[type="email"],
+input[type="tel"] {
+  width: unset;
+}
+
+.fcformNewsletter {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  gap: 14px;
 }
 
 .fcinput {
